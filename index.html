@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星夜購物節 · 雙11 × 感恩節</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0c1a3d; --ink:#0a1430; --cobalt:#1f4fa3; --sky:#4f8fd8;
+  --gold:#f4c430; --gold-soft:#ffe28a; --cream:#fdf3d3; --orange:#e8813a;
+  --card:rgba(10,20,52,.74); --line:rgba(244,196,48,.55);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--cream);
+  background:var(--night);line-height:1.65;min-height:100vh;
+}
+#paint,#stars{position:fixed;inset:0;width:100%;height:100%;z-index:-2}
+#stars{z-index:-1;pointer-events:none}
+.veil{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 30%,rgba(8,16,44,0) 0%,rgba(8,16,44,.55) 100%)}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:"Noto Serif TC",serif;font-weight:900;letter-spacing:.04em}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(8,16,44,.82);backdrop-filter:blur(8px);
+  border-bottom:2px solid var(--line)}
+nav .wrap{display:flex;gap:6px;align-items:center;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
+nav b{font-family:"Noto Serif TC",serif;color:var(--gold);white-space:nowrap;margin-right:10px}
+nav a{white-space:nowrap;text-decoration:none;padding:5px 14px;border-radius:99px;font-size:.92rem;border:1px solid transparent}
+nav a:hover{border-color:var(--gold);color:var(--gold-soft)}
+
+/* hero */
+header.hero{padding:84px 0 40px;text-align:center}
+.eyebrow{display:inline-block;padding:4px 16px;border:1.5px solid var(--gold);border-radius:99px;color:var(--gold-soft);font-size:.9rem;letter-spacing:.2em;background:rgba(10,20,52,.5)}
+.hero h1{font-size:clamp(2.2rem,7vw,4.4rem);margin:18px 0 10px;color:var(--gold);
+  text-shadow:0 0 28px rgba(244,196,48,.55),3px 3px 0 #0a1430}
+.hero h1 span{color:var(--cream)}
+.hero p.lead{max-width:640px;margin:0 auto;font-size:1.08rem;color:#f3e8c4;text-shadow:0 1px 8px #000}
+.today{margin-top:14px;font-size:.9rem;color:var(--gold-soft)}
+
+/* countdown */
+.count{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:34px 0 10px}
+.cd{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px 16px;position:relative;overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.cd::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(244,196,48,.4),transparent 65%)}
+.cd h3{font-size:1.05rem;color:var(--gold-soft)}
+.cd small{color:#cfd9f3}
+.cd .num{font-family:"Noto Serif TC",serif;font-size:2.1rem;font-weight:900;color:var(--gold);margin:6px 0 2px;white-space:nowrap}
+.cd .num em{font-style:normal;font-size:.9rem;color:var(--cream);margin:0 6px 0 2px}
+
+section{padding:46px 0 10px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.sec-title h2{font-size:clamp(1.5rem,4vw,2.1rem);color:var(--gold);text-shadow:2px 2px 0 #0a1430}
+.sec-title::after{content:"";flex:1;height:3px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 14px,transparent 14px 20px);opacity:.7}
+.sec-sub{color:#dfe7fb;margin-bottom:20px;text-shadow:0 1px 6px #000}
+
+/* timeline */
+.tl{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.ev{background:var(--card);border:2px solid rgba(255,255,255,.18);border-radius:16px;padding:14px;position:relative}
+.ev .d{font-family:"Noto Serif TC",serif;font-size:1.5rem;font-weight:900;color:var(--gold)}
+.ev .t{font-weight:700}
+.ev p{font-size:.86rem;color:#d4def5}
+.ev.tw{border-color:rgba(79,143,216,.9)}
+.ev.us{border-color:rgba(232,129,58,.95)}
+.ev.hl{box-shadow:0 0 0 3px rgba(244,196,48,.55),0 0 28px rgba(244,196,48,.4)}
+.ev .badge{position:absolute;top:-11px;right:12px;background:var(--gold);color:#0a1430;font-size:.72rem;font-weight:700;padding:1px 10px;border-radius:99px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;margin-top:14px;color:#dfe7fb}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* toolbar */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.chip{border:1.5px solid var(--line);background:rgba(10,20,52,.7);color:var(--cream);padding:6px 16px;border-radius:99px;cursor:pointer;font:inherit;font-size:.92rem}
+.chip[aria-pressed="true"]{background:var(--gold);color:#0a1430;font-weight:700}
+.search{flex:1;min-width:180px;max-width:320px;padding:8px 16px;border-radius:99px;border:1.5px solid var(--line);background:rgba(10,20,52,.8);color:var(--cream);font:inherit}
+.search::placeholder{color:#9fb0d9}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.deal{background:var(--card);border:2px solid rgba(255,255,255,.2);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:10px;
+  transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden}
+.deal:hover{transform:translateY(-4px) rotate(-.4deg);border-color:var(--gold);box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.deal::after{content:"";position:absolute;left:-40px;bottom:-40px;width:120px;height:120px;border-radius:50%;
+  border:3px dashed rgba(244,196,48,.2)}
+.deal .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.deal h3{font-size:1.35rem;color:var(--gold-soft)}
+.tag{font-size:.72rem;padding:2px 10px;border-radius:99px;font-weight:700;white-space:nowrap}
+.tag.tw{background:var(--sky);color:#06122e}
+.tag.us{background:var(--orange);color:#1b0c02}
+.when{font-size:.88rem;color:var(--gold);font-weight:700}
+.deal ul{list-style:none;display:grid;gap:5px;font-size:.92rem}
+.deal li{padding-left:20px;position:relative}
+.deal li::before{content:"✦";position:absolute;left:0;color:var(--gold)}
+.feat{font-size:.85rem;color:#c8d5f5;border-top:1px dashed rgba(255,255,255,.25);padding-top:8px}
+.btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;
+  background:linear-gradient(180deg,var(--gold),#e0a900);color:#0a1430;padding:10px 16px;border-radius:12px;border:2px solid #0a1430;
+  box-shadow:3px 3px 0 #0a1430;transition:transform .15s}
+.btn:hover{transform:translate(-1px,-1px)}
+.empty{display:none;text-align:center;padding:30px;background:var(--card);border-radius:16px}
+
+/* thanksgiving */
+.thanks{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:22px}
+.panel h3{color:var(--gold);margin-bottom:10px;font-size:1.2rem}
+.panel ul{padding-left:1.1em;display:grid;gap:7px;font-size:.94rem}
+.panel table{width:100%;border-collapse:collapse;font-size:.9rem}
+.panel td,.panel th{padding:6px 4px;border-bottom:1px dashed rgba(255,255,255,.22);text-align:left}
+.panel th{color:var(--gold-soft)}
+.note{font-size:.8rem;color:#b9c8ee;margin-top:10px}
+.quote{font-family:"Noto Serif TC",serif;font-size:1.1rem;text-align:center;padding:26px 20px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(232,129,58,.28),rgba(31,79,163,.4));border:2px solid var(--gold);margin-top:18px}
+.quote small{display:block;margin-top:6px;font-family:"Noto Sans TC";font-size:.82rem;color:#e6dcb5}
+
+/* sources */
+.src{list-style:none;display:grid;gap:8px}
+.src a{color:var(--gold-soft)}
+footer{padding:40px 0 60px;text-align:center;color:#c8d5f5;font-size:.85rem}
+@media (max-width:560px){.hero{padding-top:56px}.grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="paint"></canvas>
+<canvas id="stars"></canvas>
+<div class="veil"></div>
+
+<nav><div class="wrap">
+  <b>🌙 星夜購物節</b>
+  <a href="#countdown">倒數</a><a href="#timeline">檔期</a><a href="#deals">優惠</a><a href="#thanks">感恩節</a><a href="#sources">資料來源</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">2026 · 雙11 × 感恩節 × 黑色星期五</span>
+  <h1>星夜<span>購物節</span></h1>
+  <p class="lead">在旋轉的星空下，一次看清台灣雙11平台與美國感恩節檔期的優惠、日期與特色，點擊即可前往各大購物網站。</p>
+  <p class="today" id="today"></p>
+
+  <div class="count" id="countdown">
+    <div class="cd"><h3>雙11 開跑</h3><small>11/11 00:00（台灣時間）</small><div class="num" data-t="2026-11-11T00:00:00+08:00">--</div></div>
+    <div class="cd"><h3>感恩節</h3><small>11/26（美東）</small><div class="num" data-t="2026-11-26T00:00:00-05:00">--</div></div>
+    <div class="cd"><h3>黑色星期五</h3><small>11/27（美東）</small><div class="num" data-t="2026-11-27T00:00:00-05:00">--</div></div>
+    <div class="cd"><h3>網購星期一</h3><small>11/30（美東）</small><div class="num" data-t="2026-11-30T00:00:00-05:00">--</div></div>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <section id="timeline">
+    <div class="sec-title"><h2>檔期時間軸</h2></div>
+    <p class="sec-sub">從台灣雙11到美國感恩節購物週，一條星河串起來。</p>
+    <div class="tl">
+      <div class="ev tw"><div class="d">10/27</div><div class="t">PChome・Yahoo 開跑</div><p>PChome 檔期至 11/16。</p></div>
+      <div class="ev tw"><div class="d">11/1</div><div class="t">momo・蝦皮 VIP Day</div><p>momo 雙11 開跑；蝦皮全站滿 500 折 100。</p></div>
+      <div class="ev tw hl"><span class="badge">最高潮</span><div class="d">11/11</div><div class="t">雙11 當天</div><p>蝦皮直營券、momo 與各平台回饋同步衝刺。</p></div>
+      <div class="ev us hl"><span class="badge">感恩</span><div class="d">11/26</div><div class="t">美國感恩節</div><p>多數大型實體店休息，線上優惠先行熱身。</p></div>
+      <div class="ev us"><div class="d">11/27</div><div class="t">黑色星期五</div><p>Cyber Week 開始（11/27–12/1）。</p></div>
+      <div class="ev us"><div class="d">11/28</div><div class="t">小商家星期六</div><p>Small Business Saturday。</p></div>
+      <div class="ev us"><div class="d">11/30</div><div class="t">網購星期一</div><p>Cyber Monday，線上全面開打。</p></div>
+      <div class="ev us"><div class="d">12/1</div><div class="t">捐贈星期二</div><p>Giving Tuesday，為感恩季畫下句點。</p></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--sky)"></i>台灣雙11</span><span><i style="background:var(--orange)"></i>美國感恩節檔期</span><span><i style="background:var(--gold)"></i>重點日</span></div>
+  </section>
+
+  <section id="deals">
+    <div class="sec-title"><h2>平台優惠與特色</h2></div>
+    <p class="sec-sub">篩選地區或輸入關鍵字（例如「回饋」「折價券」「會員」）。</p>
+    <div class="bar">
+      <button class="chip" data-f="all" aria-pressed="true">全部</button>
+      <button class="chip" data-f="tw" aria-pressed="false">🇹🇼 台灣雙11</button>
+      <button class="chip" data-f="us" aria-pressed="false">🇺🇸 美國感恩節</button>
+      <input class="search" id="q" type="search" placeholder="搜尋平台或優惠…" aria-label="搜尋">
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">找不到符合的優惠，換個關鍵字試試。</div>
+    <p class="note">⚠️ 優惠金額、名額與期間可能隨時調整，並有使用上限與條件，下單前請以各平台官方公告為準。</p>
+  </section>
+
+  <section id="thanks">
+    <div class="sec-title"><h2>感恩節購物指南</h2></div>
+    <p class="sec-sub">結合感恩節的檔期特色與實用提醒。</p>
+    <div class="thanks">
+      <div class="panel">
+        <h3>🦃 感恩節當天（11/26）</h3>
+        <ul>
+          <li>往年 Walmart、Target、Best Buy、Home Depot、Costco、Sam's Club、REI 感恩節休息，今年營業時間請見官網公告。</li>
+          <li>Costco、Sam's Club 的黑五價格需有會員資格。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>🕕 黑五開門時間（2025 年慣例）</h3>
+        <table>
+          <tr><th>店家</th><th>開門</th></tr>
+          <tr><td>Kohl's / JCPenney</td><td>5:00</td></tr>
+          <tr><td>Walmart / Target / Home Depot / Lowe's</td><td>6:00（Target 部分地區 7:00）</td></tr>
+          <tr><td>Best Buy / Dick's</td><td>6:00</td></tr>
+          <tr><td>Sam's Club</td><td>7:00</td></tr>
+          <tr><td>Costco</td><td>9:00</td></tr>
+        </table>
+        <p class="note">2026 年時間通常於 10 月底至 11 月初公布，目前為 2025 年參考值。</p>
+      </div>
+      <div class="panel">
+        <h3>🧭 聰明買提醒</h3>
+        <ul>
+          <li>許多零售商在黑五與網購星期一暫停價格保證（price match）。</li>
+          <li>Apple 過去多以贈送禮品卡取代直接大降價。</li>
+          <li>台灣雙11檔期 11/16 前結束，與美國黑五可分批規劃預算。</li>
+          <li>Giving Tuesday（12/1）可把省下的預算轉為捐贈。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quote">「我在這片星空下，數著今天的感謝。」<small>把購物清單縮短一點，把心意留給重要的人。</small></div>
+  </section>
+
+  <section id="sources">
+    <div class="sec-title"><h2>資料來源</h2></div>
+    <ul class="src">
+      <li>📰 <a href="https://wantrich.chinatimes.com/news/20261028900089-420501" target="_blank" rel="noopener">旺得富｜2026 雙11 電商優惠重點（2026/10/28）</a></li>
+      <li>📰 <a href="https://news.tvbs.com.tw/life/4041849" target="_blank" rel="noopener">TVBS｜雙11 各平台檔期與優惠整理（2026/10/30）</a></li>
+      <li>📅 <a href="https://acadcalendar.com/black-friday/" target="_blank" rel="noopener">AcadCalendar｜2026 Black Friday 日期與零售商營業資訊</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer>以梵谷《星夜》的筆觸精神繪製（原創程式生成） · 資料整理日：2026/11/03</footer>
+
+<script>
+/* ---------- Deals data ---------- */
+const DEALS=[
+ {id:'momo',r:'tw',name:'momo 購物網',when:'11/1、11/10–11/11（11/2–11/9 另有活動）',
+  bullets:['個人回饋最高 3,600；團購最高 15,555','11/1 與 11/10–11/11 單日下單可參加 NISSAN 汽車抽獎','11/2–11/9 單日滿 1,111 登記抽 7-11 飲品'],
+  feat:'moPro 會員年費 299 元；推薦好友可得 5%–25% mo 幣回饋。',url:'https://www.momoshop.com.tw/',cta:'前往 momo'},
+ {id:'pchome',r:'tw',name:'PChome 24h 購物',when:'10/27–11/16「1111 超省超速購」',
+  bullets:['回饋最高 32%','折價券：滿 3,500 折 300（10/28–11/1）、滿 6,000 折 600（11/9–11/11）','星展 PChome Prime 聯名卡最高 11,111 P 幣；國泰 CUBE 卡指定期間最高 13%'],
+  feat:'可搭配 OPENPOINT 點數折抵，主打價格與配送速度。',url:'https://24h.pchome.com.tw/',cta:'前往 PChome'},
+ {id:'shopee',r:'tw',name:'蝦皮購物',when:'11.11 最強購物節（11/1 為 VIP Day）',
+  bullets:['蝦幣 100% 回饋（上限 999 幣）','11/1 VIP Day 全站滿 500 折 100','11/11 直營 8 折券，最高折 400'],
+  feat:'長榮航空機票抽獎總價值逾 200 萬，VIP 會員 11/13 前登記。蝦幣回饋非現金，有使用期限與上限。',url:'https://shopee.tw/',cta:'前往蝦皮'},
+ {id:'yahoo',r:'tw',name:'Yahoo 購物中心',when:'1111 買買節（10/27 起）',
+  bullets:['最高 39% 回饋；uniopen 卡最高 24%（11/1–11/12）','滿 2,000 送 220 購物金（10/29–11/3）','OPENPOINT 1 點可折 111'],
+  feat:'新推 AI 導購「AI懂買」，用對話找商品；抽獎含迪士尼雙人郵輪假期。',url:'https://tw.buy.yahoo.com/',cta:'前往 Yahoo 購物'},
+ {id:'amazon',r:'us',name:'Amazon',when:'Cyber Week：11/27–12/1',
+  bullets:['黑五與網購星期一屬於 Cyber Week 線上檔期'],
+  feat:'實際折扣與品項以 Amazon 官網公告為準。',url:'https://www.amazon.com/',cta:'前往 Amazon'},
+ {id:'walmart',r:'us',name:'Walmart',when:'黑五 11/27（往年 6:00 開門）',
+  bullets:['往年感恩節當天休息'],
+  feat:'2026 營業時間請看官網。',url:'https://www.walmart.com/',cta:'前往 Walmart'},
+ {id:'target',r:'us',name:'Target',when:'黑五 11/27（往年 6:00，部分地區 7:00）',
+  bullets:['往年感恩節當天休息'],
+  feat:'許多零售商在黑五與網購星期一暫停價格保證。',url:'https://www.target.com/',cta:'前往 Target'},
+ {id:'bestbuy',r:'us',name:'Best Buy',when:'黑五 11/27（往年 6:00–22:00）',
+  bullets:['往年感恩節當天休息'],
+  feat:'購買前確認退換貨與價格保證條款。',url:'https://www.bestbuy.com/',cta:'前往 Best Buy'},
+ {id:'costco',r:'us',name:'Costco',when:'黑五 11/27（往年 9:00 開門）',
+  bullets:['往年感恩節當天休息','黑五價格需要會員資格'],
+  feat:'Sam\'s Club 同樣需會員（往年 7:00 開門）。',url:'https://www.costco.com/',cta:'前往 Costco'},
+ {id:'iherb',r:'us',name:'iHerb',when:'黑五／網購星期一檔期（依官網公告）',
+  bullets:['台灣民眾常用的海外購物網站'],
+  feat:'此項目未取得 2026 官方優惠細節，請以網站為準。',url:'https://tw.iherb.com/',cta:'前往 iHerb'}
+];
+const grid=document.getElementById('grid'),empty=document.getElementById('empty');
+let filter='all',kw='';
+function render(){
+  const list=DEALS.filter(d=>(filter==='all'||d.r===filter)&&
+    (d.name+d.when+d.bullets.join('')+d.feat).toLowerCase().includes(kw));
+  grid.innerHTML=list.map(d=>`
+   <article class="deal">
+     <div class="top"><h3>${d.name}</h3><span class="tag ${d.r}">${d.r==='tw'?'台灣雙11':'美國感恩節'}</span></div>
+     <div class="when">🗓 ${d.when}</div>
+     <ul>${d.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+     <div class="feat">${d.feat}</div>
+     <a class="btn" href="${d.url}" target="_blank" rel="noopener noreferrer">${d.cta} ↗</a>
+   </article>`).join('');
+  empty.style.display=list.length?'none':'block';
+}
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+  c.setAttribute('aria-pressed','true');filter=c.dataset.f;render();
+}));
+document.getElementById('q').addEventListener('input',e=>{kw=e.target.value.trim().toLowerCase();render()});
+render();
+
+/* ---------- Countdown ---------- */
+const nums=[...document.querySelectorAll('.num')];
+function tick(){
+  const now=Date.now();
+  nums.forEach(n=>{
+    let s=Math.floor((new Date(n.dataset.t)-now)/1000);
+    if(s<=0){n.innerHTML='進行中 ✦';return}
+    const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),sec=s%60;
+    n.innerHTML=`${d}<em>天</em>${String(h).padStart(2,'0')}<em>時</em>${String(m).padStart(2,'0')}<em>分</em>${String(sec).padStart(2,'0')}<em>秒</em>`;
+  });
+  document.getElementById('today').textContent='今天是 '+new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+}
+tick();setInterval(tick,1000);
+
+/* ---------- Van Gogh-style swirling sky (procedural, original) ---------- */
+const paint=document.getElementById('paint'),pc=paint.getContext('2d');
+const stars=document.getElementById('stars'),sc=stars.getContext('2d');
+let W,H,vort=[],starPts=[];
+function rnd(a,b){return a+Math.random()*(b-a)}
+function seeded(seed){return()=>(seed=(seed*16807)%2147483647)/2147483647}
+function setup(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  [paint,stars].forEach(c=>{c.width=W*dpr;c.height=H*dpr;c.getContext('2d').setTransform(dpr,0,0,dpr,0,0)});
+  const r=seeded(20261103);
+  vort=[
+    {x:W*.30,y:H*.38,R:Math.min(W,H)*.34,s:1},
+    {x:W*.72,y:H*.30,R:Math.min(W,H)*.26,s:-1},
+    {x:W*.52,y:H*.72,R:Math.min(W,H)*.30,s:1},
+    {x:W*.90,y:H*.78,R:Math.min(W,H)*.22,s:-1}
+  ];
+  starPts=[
+    {x:W*.16,y:H*.18,r:26},{x:W*.46,y:H*.12,r:34},{x:W*.82,y:H*.16,r:22},
+    {x:W*.62,y:H*.46,r:28},{x:W*.10,y:H*.60,r:24},{x:W*.34,y:H*.84,r:30},{x:W*.92,y:H*.52,r:20}
+  ];
+  drawPaint(r);
+}
+function field(x,y){
+  let vx=Math.sin(y*.006)*.6+.5, vy=Math.cos(x*.005)*.35;
+  for(const v of vort){
+    const dx=x-v.x,dy=y-v.y,d=Math.hypot(dx,dy)+1,w=Math.exp(-(d*d)/(v.R*v.R*1.1));
+    vx+=-dy/d*v.s*w*3.2; vy+=dx/d*v.s*w*3.2;
+  }
+  return Math.atan2(vy,vx);
+}
+function palette(y,r){
+  const t=y/H, p=r();
+  const sets=[
+    ['#0a1a46','#12306e','#1c4590','#2a5fb0'],
+    ['#123a7a','#2a63b5','#4f8fd8','#1d7a86'],
+    ['#1b4f8f','#3a78c2','#6fa8e0','#e9d58a']
+  ];
+  const s=t<.4?sets[0]:t<.75?sets[1]:sets[2];
+  if(p>.93) return '#f4d35e';
+  if(p>.9) return '#9fd0f0';
+  return s[Math.floor(r()*s.length)];
+}
+function drawPaint(r){
+  pc.fillStyle='#0c1a3d';pc.fillRect(0,0,W,H);
+  const n=Math.floor(W*H/55);
+  for(let i=0;i<n;i++){
+    let x=r()*W,y=r()*H, len=10+r()*22, lw=2.5+r()*3.5;
+    pc.strokeStyle=palette(y,r);pc.globalAlpha=.55+r()*.4;pc.lineWidth=lw;pc.lineCap='round';
+    pc.beginPath();pc.moveTo(x,y);
+    for(let k=0;k<4;k++){const a=field(x,y);x+=Math.cos(a)*len/4;y+=Math.sin(a)*len/4;pc.lineTo(x,y)}
+    pc.stroke();
+  }
+  pc.globalAlpha=1;
+  // glowing crescent moon (original composition, lower right)
+  const mx=W*.86,my=H*.22,mr=Math.min(W,H)*.06;
+  const g=pc.createRadialGradient(mx,my,mr*.4,mx,my,mr*4);
+  g.addColorStop(0,'rgba(255,214,90,.55)');g.addColorStop(1,'rgba(255,214,90,0)');
+  pc.fillStyle=g;pc.beginPath();pc.arc(mx,my,mr*4,0,7);pc.fill();
+  pc.fillStyle='#ffd45a';pc.beginPath();pc.arc(mx,my,mr,0,7);pc.fill();
+  pc.fillStyle='#16377a';pc.beginPath();pc.arc(mx+mr*.5,my-mr*.15,mr*.9,0,7);pc.fill();
+  // star halos painted as short orbiting strokes
+  for(const s of starPts){
+    for(let ring=1;ring<=4;ring++){
+      const rad=s.r*(.6+ring*.55);
+      pc.strokeStyle=ring%2?'rgba(255,226,120,.75)':'rgba(190,225,250,.7)';pc.lineWidth=3;pc.lineCap='round';
+      const steps=Math.floor(rad*.7);
+      for(let a=0;a<steps;a++){
+        const th=a/steps*Math.PI*2+r()*.05;
+        const x=s.x+Math.cos(th)*rad,y=s.y+Math.sin(th)*rad;
+        pc.beginPath();pc.moveTo(x,y);
+        pc.lineTo(x+Math.cos(th+Math.PI/2)*5,y+Math.sin(th+Math.PI/2)*5);pc.stroke();
+      }
+    }
+  }
+}
+function animate(t){
+  sc.clearRect(0,0,W,H);
+  for(const s of starPts){
+    const p=.5+.5*Math.sin(t/900+s.x);
+    const g=sc.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3.4);
+    g.addColorStop(0,`rgba(255,240,150,${.75+.2*p})`);g.addColorStop(.35,`rgba(255,214,90,${.35+.25*p})`);g.addColorStop(1,'rgba(255,214,90,0)');
+    sc.fillStyle=g;sc.beginPath();sc.arc(s.x,s.y,s.r*3.4,0,7);sc.fill();
+    sc.fillStyle='#fff6c8';sc.beginPath();sc.arc(s.x,s.y,s.r*.28+p*2,0,7);sc.fill();
+  }
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(animate);
+}
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(setup,200)});
+setup();requestAnimationFrame(animate);
+</script>
+</body>
+</html>
